@@ -38,11 +38,30 @@ def power_spectrum(sequences):
         pspec.append(PS)
     return pspec
 
+def even_scaling(pspec):
+    scaled_ps = []
+    M = len(max(pspec))
+    for ps in pspec:
+        N = len(ps)
+        temp = []
+        temp[0] = ps[0]
+        for k in range(1,M,1):
+            p = round(k*N/M)
+            q = round((k-1)*N/M)
+            sc = 0
+            for j in range(q,p+1,1):
+                sc += ps[j]
+            sc /= (p-q+1)
+            temp[k] = sc
+        scaled_ps.append(temp)
+        
+    return scaled_ps
 if __name__ == "__main__":
     sequences = fasta_read('readsdata/reads_02_3.fq')
     pspec = power_spectrum(sequences)
-
-    # plt.plot(pspec[500][1:200])
-    # plt.show()
+    
+#     plt.plot(pspec[100][1:200])
+#     plt.show()
 
     
+
