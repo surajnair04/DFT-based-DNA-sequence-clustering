@@ -56,6 +56,7 @@ def even_scaling(pspec):
         scaled_ps.append(temp)
         
     return scaled_ps
+
 if __name__ == "__main__":
     sequences = fasta_read('readsdata/reads_02_3.fq')
     pspec = power_spectrum(sequences)
