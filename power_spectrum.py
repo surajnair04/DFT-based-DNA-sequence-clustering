@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
+import os
+from sklearn.cluster import KMeans
+#%matplotlib inline
 
 # naive way of getting sequences
 def fasta_read(file_name):
@@ -35,7 +37,7 @@ def power_spectrum(sequences):
 
         #combined power spectrum
         PS = PS_A+PS_C+PS_G+PS_T
-        pspec.append(PS)
+        pspec.append(PS[1:len(PS)])         #Exclude the entry corresponding to index 0
     return pspec
 
 def even_scaling(pspec):
@@ -58,11 +60,27 @@ def even_scaling(pspec):
     return scaled_ps
 
 if __name__ == "__main__":
-    sequences = fasta_read('readsdata/reads_02_3.fq')
-    pspec = power_spectrum(sequences)
+    kmeans = KMeans(n_clusters=3, random_state=1)       #No. of clusters=?
+    pow_spect = []
+    for file_name in os.listdir('readsdata'):
+        #print(file_name)
+        sequences = fasta_read('readsdata/' + file_name)
+        pow_spect.append(power_spectrum(sequences))
     
-#     plt.plot(pspec[100][1:200])
-#     plt.show()
+    pow_spect = [item for sublist in pow_spect for item in sublist]
+    #print(pow_spect)
+    
+    kmeans.fit(pow_spect)
+    #print(kmeans.labels_)
+    #print(kmeans.cluster_centers_)                     #Cluster Centers Identified
+
+    #Test on given sequences
+    new_sequence = fasta_read('readsdata/reads_02_3.fq')
+    print(kmeans.predict(power_spectrum(new_sequence)))
+
+    for i in range(len(pow_spect)):
+        plt.plot(pow_spect[i][1:200])
+    plt.show()
 
     
 
