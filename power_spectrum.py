@@ -22,7 +22,7 @@ def power_spectrum(sequences):
 def linear_scaling(pspec):
     scaled_ps = []
     M = len(max(pspec,key=len))
-    for i,ps in enumerate(pspec):
+    for ps in pspec:
         N = len(ps)
         bound = np.arange(N)
         ip = interpolate.interp1d(bound,ps,fill_value='extrapolate')
@@ -34,7 +34,7 @@ def linear_scaling(pspec):
 def cubic_scaling(pspec):
     scaled_ps = []
     M = len(max(pspec,key=len))
-    for i,ps in enumerate(pspec):
+    for ps in pspec:
         N = len(ps)
         bound = np.arange(N)
         ip = interpolate.CubicSpline(bound,ps,extrapolate=True)
