@@ -6,17 +6,11 @@ from sklearn import metrics
 from Bio import SeqIO
 from collections import Counter
 from scipy import interpolate
-<<<<<<< HEAD
-<<<<<<< HEAD
 from Bio.Phylo.TreeConstruction import _DistanceMatrix
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 from Bio import Phylo
 import pydot
 import pylab
-=======
->>>>>>> master
-=======
->>>>>>> master
 %matplotlib inline
 
 def power_spectrum(sequences):
