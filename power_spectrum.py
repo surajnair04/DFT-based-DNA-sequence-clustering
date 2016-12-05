@@ -5,6 +5,7 @@ from sklearn.cluster import KMeans
 from sklearn import metrics
 from Bio import SeqIO
 from collections import Counter
+from scipy import interpolate
 %matplotlib inline
 
 def power_spectrum(sequences):
