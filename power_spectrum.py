@@ -6,6 +6,11 @@ from sklearn import metrics
 from Bio import SeqIO
 from collections import Counter
 from scipy import interpolate
+from Bio.Phylo.TreeConstruction import _DistanceMatrix
+from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
+from Bio import Phylo
+import pydot
+import pylab
 %matplotlib inline
 
 def power_spectrum(sequences):
@@ -44,6 +49,17 @@ def cubic_scaling(pspec):
         scaled_ps.append(y)
     return scaled_ps
 
+def get_euclidean_distance(scaled_ps):
+    dist_mat = []
+    for i in range(1,len(scaled_ps)+1):
+        row = []
+        for j in range(i):
+            if((i-1)==j):
+                row.append(0)
+            else:
+                row.append(np.linalg.norm(scaled_ps[j]-scaled_ps[i-1]))
+        dist_mat.append(row)
+    return dist_mat
 
 if __name__ == "__main__":
     names = []
@@ -59,6 +75,12 @@ if __name__ == "__main__":
             sequences.append(record.seq)
         pspec = power_spectrum(sequences)
         scaled_ps = linear_scaling(pspec) #cubic_scaling(pspec)
-        
+        dist_mat = get_euclidean_distance(scaled_ps)
+        constructor = DistanceTreeConstructor()
+        distance_matrix_10 = _DistanceMatrix(names=names[0:10], matrix=dist_arr[0:10])
+        tree_upgma_10 = constructor.upgma(distance_matrix_10)
+        Phylo.draw(tree_upgma_10)
+        tree_nj_10 = constructor.nj(distance_matrix_10)
+        Phylo.draw(tree_nj_10)
     
 
